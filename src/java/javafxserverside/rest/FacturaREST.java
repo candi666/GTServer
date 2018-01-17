@@ -51,7 +51,7 @@ public class FacturaREST {
         }catch(FacturasCreateException | FacturasDataException ex){
             logger.severe("Error creating factura.\n"+ex.getMessage());
         }
-        logger.info("Factura id: < "+factura.getId().toString() + " > created.");
+        //logger.info("Factura id: < "+factura.getId().toString() + " > created.");
     }
 
     /**
