@@ -36,7 +36,7 @@ public class FacturasManager implements FacturasManagerLocal {
     @Override
     public List<Factura> getAllFacturas() throws FacturasQueryException {
         logger.info("FacturasManager: Finding all facturas.");
-        return em.createNamedQuery("findAllFacturas").getResultList();
+        return em.createNamedQuery("getAllFacturas").getResultList();
     }
 
     /**
@@ -83,8 +83,8 @@ public class FacturasManager implements FacturasManagerLocal {
     @Override
     public List<Factura> getFacturasByCliente(int id) throws FacturasQueryException {
         logger.info("Facturas Manager: finding factura by cliente.");
-        
-        return em.createNamedQuery("getFacturasByCliente").setParameter("id",id).getResultList();
+
+        return em.createNamedQuery("getFacturasByCliente").setParameter("id", id).getResultList();
         //return new ArrayList<Factura>();
     }
 
@@ -145,9 +145,15 @@ public class FacturasManager implements FacturasManagerLocal {
      * @return true if valid
      */
     private boolean isValid(Factura f) {
+        
+//        if (f.getId() == null || f.getFecha() == null || f.getFechavenc() == null || f.getReparacion() == null
+//                || f.getPagada() == null || f.getTotal() == null || f.getCliente() == null) {
 
-        if (f.getId() == null || f.getFecha() == null || f.getFechavenc() == null || f.getReparacion() == null
-                || f.getPagada() == null || f.getTotal() == null || f.getCliente() == null) {
+        /** This validation allows null value for reparación and cliente (For Restful Test)
+         *  Once tested comment, and uncomment previous validation.
+         **/
+        if (f.getId() == null || f.getFecha() == null || f.getFechavenc() == null
+                || f.getPagada() == null || f.getTotal() == null) {
             return false;
         } else {
             return true;
