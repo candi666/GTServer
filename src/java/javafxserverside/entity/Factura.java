@@ -21,8 +21,8 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author 2dam
+ * Factura Entity
+ * @author Carlos
  */
 @Entity
 @Table(name="factura",schema="dindb")
@@ -115,6 +115,11 @@ public class Factura implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares if factura equals another factura.
+     * @param object factura to compare
+     * @return 
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -127,7 +132,11 @@ public class Factura implements Serializable {
         }
         return true;
     }
-
+    
+    /**
+     * Returns object data as string.
+     * @return 
+     */
     @Override
     public String toString() {
         return "javafxserverside.entity.Factura[ id=" + id + " ]";
