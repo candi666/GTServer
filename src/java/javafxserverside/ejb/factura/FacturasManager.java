@@ -1,7 +1,6 @@
 package javafxserverside.ejb.factura;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
@@ -43,7 +42,6 @@ public class FacturasManager implements FacturasManagerLocal {
      * Create new factura.
      *
      * @param factura new factura
-     * @return 0 error, 1 ok, 2 already exists.
      * @throws javafxserverside.exception.factura.FacturasCreateException
      * @throws javafxserverside.exception.factura.FacturasDataException
      */
@@ -76,9 +74,10 @@ public class FacturasManager implements FacturasManagerLocal {
     }
 
     /**
-     *
+     * Get Facturas by associated Cliente.
      * @param id
-     * @return
+     * @return Factura List
+     * @throws FacturasQueryException
      */
     @Override
     public List<Factura> getFacturasByCliente(int id) throws FacturasQueryException {
@@ -105,12 +104,12 @@ public class FacturasManager implements FacturasManagerLocal {
      * Update factura values
      *
      * @param factura factura to update (Same id, new values)
-     * @return 0 error, 1 ok, 2 doesnt exists.
+     * @throws FacturasUpdateException
      */
     @Override
     public void updateFactura(Factura factura) throws FacturasUpdateException {
         try {
-            if (!em.contains(factura)) {
+            if (!em.contains(factura)&& isValid(factura)) {
                 em.merge(factura);
             }
         } catch (Exception ex) {
@@ -123,7 +122,6 @@ public class FacturasManager implements FacturasManagerLocal {
      * Delete factura by id.
      *
      * @param id factura id
-     * @return 0 error, 1 ok, 2 doesnt exists.
      */
     @Override
     public void deleteFactura(Factura factura) throws FacturasDeleteException {
@@ -139,7 +137,7 @@ public class FacturasManager implements FacturasManagerLocal {
     }
 
     /**
-     * Utility to check if a factura object is valid
+     * Utility to check if factura data is valid
      *
      * @param f factura to check
      * @return true if valid
