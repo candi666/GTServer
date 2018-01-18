@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import javafxserverside.ejb.factura.FacturasManagerLocal;
 import javafxserverside.entity.Factura;
-import javafxserverside.exception.factura.FacturasCreateException;
-import javafxserverside.exception.factura.FacturasDataException;
-import javafxserverside.exception.factura.FacturasDeleteException;
-import javafxserverside.exception.factura.FacturasQueryException;
-import javafxserverside.exception.factura.FacturasUpdateException;
+import javafxserverside.exception.factura.FacturaCreateException;
+import javafxserverside.exception.factura.FacturaDataException;
+import javafxserverside.exception.factura.FacturaDeleteException;
+import javafxserverside.exception.factura.FacturaQueryException;
+import javafxserverside.exception.factura.FacturaUpdateException;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javafxserverside.ejb.factura.FacturaManagerLocal;
 
 /**
  * REST Class for Facturas
@@ -36,7 +36,7 @@ public class FacturaREST {
     private static final Logger logger = Logger.getLogger(FacturaREST.class.getName());
     
     @EJB
-    private FacturasManagerLocal ejb;
+    private FacturaManagerLocal ejb;
 
     /**
      * Creates factura
@@ -48,7 +48,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: creating factura.");
             ejb.createFactura(factura);
-        }catch(FacturasCreateException | FacturasDataException ex){
+        }catch(FacturaCreateException | FacturaDataException ex){
             logger.severe("Error creating factura.\n"+ex.getMessage());
         }
         //logger.info("Factura id: < "+factura.getId().toString() + " > created.");
@@ -64,7 +64,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: updating factura.");
             ejb.updateFactura(factura);
-        }catch(FacturasUpdateException ex){
+        }catch(FacturaUpdateException ex){
             logger.severe("Error updating factura.\n"+ex.getMessage());
         }
         logger.info("Factura id: < "+factura.getId().toString() + " > updated.");
@@ -82,7 +82,7 @@ public class FacturaREST {
             Factura factura = ejb.getFacturaById(id);
             
             ejb.deleteFactura(factura);
-        }catch(FacturasDeleteException | FacturasQueryException ex){
+        }catch(FacturaDeleteException | FacturaQueryException ex){
             logger.severe("Error deleting factura.\n"+ex.getMessage());
         }
         logger.info("Factura id: < "+ id + " > deleted.");
@@ -101,7 +101,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: Finding factura by id.");
             factura=ejb.getFacturaById(id);
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding factura.\n"+ex.getMessage());
         }
         
@@ -125,7 +125,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: Finding all facturas.");
             facturasList=ejb.getAllFacturas();
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding facturas.\n"+ex.getMessage());
         }
         
@@ -185,7 +185,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: Finding factura by id cliente.");
             facturasList=ejb.getFacturasByCliente(id);
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding facturas by id cliente.\n"+ex.getMessage());
         }
         

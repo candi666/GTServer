@@ -9,23 +9,23 @@ package javafxserverside.exception.factura;
  *
  * @author Carlos
  */
-public class FacturasCreateException extends Exception {
+public class FacturaDataException extends Exception {
 
     /**
-     * Creates a new instance of <code>FacturasCreateException</code> without
+     * Creates a new instance of <code>FacturasDataException</code> without
      * detail message.
      */
-    public FacturasCreateException() {
-        super("Ha ocurrido un error al intentar crear la factura.");
+    public FacturaDataException() {
+        super("Invalid factura data.");
     }
 
     /**
-     * Constructs an instance of <code>FacturasCreateException</code> with the
+     * Constructs an instance of <code>FacturasDataException</code> with the
      * specified detail message.
      *
      * @param msg the detail message.
      */
-    public FacturasCreateException(String msg) {
+    public FacturaDataException(String msg) {
         super(msg);
     }
 }

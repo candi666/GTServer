@@ -9,13 +9,13 @@ package javafxserverside.exception.factura;
  *
  * @author Carlos
  */
-public class FacturasUpdateException extends Exception {
+public class FacturaUpdateException extends Exception {
 
     /**
      * Creates a new instance of <code>FacturasUpdateException</code> without
      * detail message.
      */
-    public FacturasUpdateException() {
+    public FacturaUpdateException() {
         super("Ha ocurrido un error al intentar modificar la factura.");
     }
 
@@ -25,7 +25,7 @@ public class FacturasUpdateException extends Exception {
      *
      * @param msg the detail message.
      */
-    public FacturasUpdateException(String msg) {
+    public FacturaUpdateException(String msg) {
         super(msg);
     }
 }

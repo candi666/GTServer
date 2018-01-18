@@ -5,11 +5,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javafxserverside.entity.Factura;
-import javafxserverside.exception.factura.FacturasCreateException;
-import javafxserverside.exception.factura.FacturasDataException;
-import javafxserverside.exception.factura.FacturasDeleteException;
-import javafxserverside.exception.factura.FacturasQueryException;
-import javafxserverside.exception.factura.FacturasUpdateException;
+import javafxserverside.exception.factura.FacturaCreateException;
+import javafxserverside.exception.factura.FacturaDataException;
+import javafxserverside.exception.factura.FacturaDeleteException;
+import javafxserverside.exception.factura.FacturaQueryException;
+import javafxserverside.exception.factura.FacturaUpdateException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -20,9 +20,9 @@ import javax.persistence.PersistenceContext;
  * @author Carlos
  */
 @Stateless
-public class FacturasManager implements FacturasManagerLocal {
+public class FacturaManager implements FacturaManagerLocal {
 
-    private static final Logger logger = Logger.getLogger(FacturasManager.class.getName());
+    private static final Logger logger = Logger.getLogger(FacturaManager.class.getName());
 
     @PersistenceContext
     private EntityManager em;
@@ -33,7 +33,7 @@ public class FacturasManager implements FacturasManagerLocal {
      * @return facturas collection
      */
     @Override
-    public List<Factura> getAllFacturas() throws FacturasQueryException {
+    public List<Factura> getAllFacturas() throws FacturaQueryException {
         logger.info("FacturasManager: Finding all facturas.");
         return em.createNamedQuery("getAllFacturas").getResultList();
     }
@@ -42,22 +42,22 @@ public class FacturasManager implements FacturasManagerLocal {
      * Create new factura.
      *
      * @param factura new factura
-     * @throws javafxserverside.exception.factura.FacturasCreateException
-     * @throws javafxserverside.exception.factura.FacturasDataException
+     * @throws javafxserverside.exception.factura.FacturaCreateException
+     * @throws javafxserverside.exception.factura.FacturaDataException
      */
     @Override
-    public void createFactura(Factura factura) throws FacturasCreateException, FacturasDataException {
+    public void createFactura(Factura factura) throws FacturaCreateException, FacturaDataException {
         logger.info("Facturas Manager: creating factura.");
 
         try {
             if (!isValid(factura)) {
                 logger.info("FacturasManager: FacturasDataException creating factura.");
-                throw new FacturasDataException("Couldn't create factura, invalid factura data.");
+                throw new FacturaDataException("Couldn't create factura, invalid factura data.");
             }
             em.persist(factura);
         } catch (Exception ex) {
             logger.info("FacturasManager: FacturasCreateException creating factura");
-            throw new FacturasCreateException("Error creating factura.\n" + ex.getMessage());
+            throw new FacturaCreateException("Error creating factura.\n" + ex.getMessage());
         }
         logger.info("Factura id: < " + factura.getId().toString() + " > created.");
     }
@@ -68,7 +68,7 @@ public class FacturasManager implements FacturasManagerLocal {
      * @return facturas collection
      */
     @Override
-    public List<Factura> getFacturasByDate(Date fromDate, Date toDate) throws FacturasQueryException {
+    public List<Factura> getFacturasByDate(Date fromDate, Date toDate) throws FacturaQueryException {
         logger.info("Facturas Manager: finding factura by date.");
         return new ArrayList<Factura>();
     }
@@ -77,10 +77,10 @@ public class FacturasManager implements FacturasManagerLocal {
      * Get Facturas by associated Cliente.
      * @param id
      * @return Factura List
-     * @throws FacturasQueryException
+     * @throws FacturaQueryException
      */
     @Override
-    public List<Factura> getFacturasByCliente(int id) throws FacturasQueryException {
+    public List<Factura> getFacturasByCliente(int id) throws FacturaQueryException {
         logger.info("Facturas Manager: finding factura by cliente.");
 
         return em.createNamedQuery("getFacturasByCliente").setParameter("id", id).getResultList();
@@ -92,10 +92,10 @@ public class FacturasManager implements FacturasManagerLocal {
      *
      * @param id id number
      * @return factura with matching id
-     * @throws FacturasQueryException
+     * @throws FacturaQueryException
      */
     @Override
-    public Factura getFacturaById(int id) throws FacturasQueryException {
+    public Factura getFacturaById(int id) throws FacturaQueryException {
         logger.info("FacturasManager: finding factura by id.");
         return em.find(Factura.class, id);
     }
@@ -104,17 +104,17 @@ public class FacturasManager implements FacturasManagerLocal {
      * Update factura values
      *
      * @param factura factura to update (Same id, new values)
-     * @throws FacturasUpdateException
+     * @throws FacturaUpdateException
      */
     @Override
-    public void updateFactura(Factura factura) throws FacturasUpdateException {
+    public void updateFactura(Factura factura) throws FacturaUpdateException {
         try {
             if (!em.contains(factura)&& isValid(factura)) {
                 em.merge(factura);
             }
         } catch (Exception ex) {
             logger.info("FacturasManager: FacturasDataException updating factura.");
-            throw new FacturasUpdateException("Error updating factura.\n" + ex.getMessage());
+            throw new FacturaUpdateException("Error updating factura.\n" + ex.getMessage());
         }
     }
 
@@ -124,14 +124,14 @@ public class FacturasManager implements FacturasManagerLocal {
      * @param id factura id
      */
     @Override
-    public void deleteFactura(Factura factura) throws FacturasDeleteException {
+    public void deleteFactura(Factura factura) throws FacturaDeleteException {
         logger.info("FacturasManager: Deleting user.");
         try {
             factura = em.merge(factura);
             em.remove(factura);
         } catch (Exception ex) {
             logger.severe("FacturasManager: FacturasDeleteException deleting factura.");
-            throw new FacturasDeleteException("Error deleting factura.\n" + ex.getMessage());
+            throw new FacturaDeleteException("Error deleting factura.\n" + ex.getMessage());
         }
         logger.info("Factura id: < " + factura.getId() + " > deleted.");
     }
