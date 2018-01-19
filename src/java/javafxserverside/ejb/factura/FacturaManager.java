@@ -111,6 +111,20 @@ public class FacturaManager implements FacturaManagerLocal {
      * @throws FacturaQueryException
      */
     @Override
+    public List<Factura> getFacturasByPagada(boolean status) throws FacturaQueryException {
+        logger.info("Facturas Manager: finding factura by pagada.");
+
+        return em.createNamedQuery("getFacturasByPagada").setParameter("status", status).getResultList();
+        //return new ArrayList<Factura>();
+    }
+    
+    /**
+     * Get Facturas by associated Reparacion.
+     * @param id
+     * @return Factura List
+     * @throws FacturaQueryException
+     */
+    @Override
     public Factura getFacturasByReparacion(int id) throws FacturaQueryException {
         logger.info("Facturas Manager: finding factura by reparacion.");
         

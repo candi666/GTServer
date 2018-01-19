@@ -26,6 +26,7 @@ public interface FacturaManagerLocal {
     public List<Factura> getAllFacturas() throws FacturaQueryException;
     public List<Factura> getFacturasByDate(String fromDate, String toDate) throws FacturaQueryException;
     public List<Factura> getFacturasByCliente(int id) throws FacturaQueryException;
+    public List<Factura> getFacturasByPagada(boolean status) throws FacturaQueryException;
     public Factura getFacturasByReparacion(int id) throws FacturaQueryException;
     public Factura getFacturaById(int id) throws FacturaQueryException;
     

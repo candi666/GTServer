@@ -178,9 +178,9 @@ public class FacturaREST {
     }
     
     /**
-     * Find facturas by Cliente id.
-     * @param id Client id
-     * @return Facturas list associated to client.
+     * Find facturas by Reparacion id.
+     * @param id Reparacion id
+     * @return Facturas list associated to reparacion.
      */
     @GET
     @Path("factura/reparacion/{id}")
@@ -188,16 +188,36 @@ public class FacturaREST {
     public Factura findByReparacion(@PathParam("id") int id) {
         Factura factura= null;
         try{
-            logger.info("FacturaREST: Finding factura by id cliente.");
+            logger.info("FacturaREST: Finding factura by id reparacion.");
             factura=ejb.getFacturasByReparacion(id);
         }catch(FacturaQueryException ex){
-            logger.severe("Error finding facturas by id cliente.\n"+ex.getMessage());
+            logger.severe("Error finding facturas by id reparacion.\n"+ex.getMessage());
         }
         
         logger.info("FacturaREST: Factura id <"+factura.getId()+">, reparacion <"+factura.getReparacion().getId()+"> found.");
         return factura;
     }
     
+    /**
+     * Find facturas by Reparacion id.
+     * @param id Reparacion id
+     * @return Facturas list associated to reparacion.
+     */
+    @GET
+    @Path("factura/pagada/{status}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Factura> findByPagada(@PathParam("status") boolean status) {
+        List facturasList= null;
+        try{
+            logger.info("FacturaREST: Finding factura by id reparacion.");
+            facturasList=ejb.getFacturasByPagada(status);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by id reparacion.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
+        return facturasList;
+    }
 
     
 }
