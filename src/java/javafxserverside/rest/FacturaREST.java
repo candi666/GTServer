@@ -140,7 +140,7 @@ public class FacturaREST {
      * @return Facturas list matching the date range.
      */
     @GET
-    @Path("factura/{fromDate}/{toDate}")
+    @Path("rango/{fromDate}/{toDate}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Factura> findByDate(
             @PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate) {
@@ -162,7 +162,7 @@ public class FacturaREST {
      * @return Facturas list associated to client.
      */
     @GET
-    @Path("factura/cliente/{id}")
+    @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Factura> findByCliente(@PathParam("id") int id) {
         List facturasList= null;
@@ -183,7 +183,7 @@ public class FacturaREST {
      * @return Facturas list associated to reparacion.
      */
     @GET
-    @Path("factura/reparacion/{id}")
+    @Path("reparacion/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Factura findByReparacion(@PathParam("id") int id) {
         Factura factura= null;
@@ -204,7 +204,7 @@ public class FacturaREST {
      * @return Facturas list associated to reparacion.
      */
     @GET
-    @Path("factura/pagada/{status}")
+    @Path("pagada/{status}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Factura> findByPagada(@PathParam("status") boolean status) {
         List facturasList= null;

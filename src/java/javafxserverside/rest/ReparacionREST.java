@@ -135,7 +135,7 @@ public class ReparacionREST {
      * @return Reparaciones list associated to client.
      */
     @GET
-    @Path("reparacion/cliente/{id}")
+    @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Reparacion> findByCliente(@PathParam("id") int id) {
         List reparacionesList= null;
@@ -158,7 +158,7 @@ public class ReparacionREST {
      * @return Facturas list matching the date range.
      */
     @GET
-    @Path("reparacion/{fromDate}/{toDate}")
+    @Path("rango/{fromDate}/{toDate}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Reparacion> findByDate(
             @PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate) {
