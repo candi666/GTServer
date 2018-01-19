@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="pieza",schema="dindb")
 @NamedQueries({
     @NamedQuery(
-        name="findAllPiezas",
+        name="getAllPiezas",
         query="SELECT p FROM Pieza p"
     )
 })
@@ -39,8 +39,8 @@ public class Pieza implements Serializable {
     private Integer id;
     private String descripcion;
     private String fabricante;
-    @ManyToMany
-    private Collection<Reparacion> reparaciones;
+//    @ManyToMany
+//    private Collection<Reparacion> reparaciones;
 
     public Integer getId() {
         return id;
@@ -63,13 +63,13 @@ public class Pieza implements Serializable {
         this.fabricante = fabricante;
     }
 
-    @XmlTransient
-    public Collection<Reparacion> getReparaciones() {
-        return reparaciones;
-    }
-    public void setReparaciones(Collection<Reparacion> reparaciones) {
-        this.reparaciones = reparaciones;
-    }
+//    @XmlTransient
+//    public Collection<Reparacion> getReparaciones() {
+//        return reparaciones;
+//    }
+//    public void setReparaciones(Collection<Reparacion> reparaciones) {
+//        this.reparaciones = reparaciones;
+//    }
 
     
 

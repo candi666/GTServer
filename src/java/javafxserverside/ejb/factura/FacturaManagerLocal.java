@@ -1,14 +1,15 @@
 package javafxserverside.ejb.factura;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javafxserverside.entity.Factura;
+import javafxserverside.entity.Reparacion;
 import javafxserverside.exception.factura.FacturaCreateException;
 import javafxserverside.exception.factura.FacturaDataException;
 import javafxserverside.exception.factura.FacturaDeleteException;
 import javafxserverside.exception.factura.FacturaQueryException;
 import javafxserverside.exception.factura.FacturaUpdateException;
+
 import javax.ejb.Local;
 
 /**
@@ -23,8 +24,9 @@ public interface FacturaManagerLocal {
     
     // Get 
     public List<Factura> getAllFacturas() throws FacturaQueryException;
-    public List<Factura> getFacturasByDate(Date fromDate, Date toDate) throws FacturaQueryException;
+    public List<Factura> getFacturasByDate(String fromDate, String toDate) throws FacturaQueryException;
     public List<Factura> getFacturasByCliente(int id) throws FacturaQueryException;
+    public Factura getFacturasByReparacion(int id) throws FacturaQueryException;
     public Factura getFacturaById(int id) throws FacturaQueryException;
     
     // Update

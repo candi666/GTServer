@@ -34,7 +34,7 @@ public class PiezaManager implements PiezaManagerLocal {
     @Override
     public List<Pieza> getAllPiezas() throws PiezaQueryException {
         logger.info("PiezaManager: Finding all piezas.");
-        return em.createNamedQuery("findAllPiezas").getResultList();
+        return em.createNamedQuery("getAllPiezas").getResultList();
     }
 
     /**

@@ -1,10 +1,13 @@
 package javafxserverside.ejb.factura;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javafxserverside.entity.Factura;
+import javafxserverside.entity.Reparacion;
 import javafxserverside.exception.factura.FacturaCreateException;
 import javafxserverside.exception.factura.FacturaDataException;
 import javafxserverside.exception.factura.FacturaDeleteException;
@@ -59,7 +62,7 @@ public class FacturaManager implements FacturaManagerLocal {
             logger.info("FacturasManager: FacturasCreateException creating factura");
             throw new FacturaCreateException("Error creating factura.\n" + ex.getMessage());
         }
-        logger.info("Factura id: < " + factura.getId().toString() + " > created.");
+        logger.info("Factura id: < " + factura.getId() + " > created.");
     }
 
     /**
@@ -68,9 +71,23 @@ public class FacturaManager implements FacturaManagerLocal {
      * @return facturas collection
      */
     @Override
-    public List<Factura> getFacturasByDate(Date fromDate, Date toDate) throws FacturaQueryException {
+    public List<Factura> getFacturasByDate(String fromDate, String toDate) throws FacturaQueryException {
         logger.info("Facturas Manager: finding factura by date.");
-        return new ArrayList<Factura>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date fd = null;
+        Date td = null;
+        
+        try {
+
+            fd = formatter.parse(fromDate);
+            td = formatter.parse(toDate);
+
+        } catch (ParseException e) {
+            logger.info("Facturas Manager: invalid date format.(Correct format: yyyy-MM-dd)");
+            e.printStackTrace();
+        }
+
+        return em.createNamedQuery("getFacturasByDate").setParameter("fromdate", new java.sql.Date(fd.getTime())).setParameter("todate", new java.sql.Date(td.getTime())).getResultList();
     }
 
     /**
@@ -86,9 +103,30 @@ public class FacturaManager implements FacturaManagerLocal {
         return em.createNamedQuery("getFacturasByCliente").setParameter("id", id).getResultList();
         //return new ArrayList<Factura>();
     }
+    
+    /**
+     * Get Facturas by associated Cliente.
+     * @param id
+     * @return Factura List
+     * @throws FacturaQueryException
+     */
+    @Override
+    public Factura getFacturasByReparacion(int id) throws FacturaQueryException {
+        logger.info("Facturas Manager: finding factura by reparacion.");
+        
+        /**
+         * For Testing mockdata (facturas filled with mockdata, one reparacion might be associated to many facturas).
+         * This will work also when the data is right. (One reparation only associated with one factura)
+         **/
+        return (Factura)em.createNamedQuery("getFacturaByReparacion").setParameter("id", id).getResultList().get(0);
+        
+        // Only works when the data is 1:1
+        //return (Factura)em.createNamedQuery("getFacturaByReparacion").setParameter("id", id).getSingleResult();
+
+    }
 
     /**
-     * Get factura by id number
+     * Get factura by id
      *
      * @param id id number
      * @return factura with matching id

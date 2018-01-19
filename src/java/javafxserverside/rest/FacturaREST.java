@@ -106,9 +106,9 @@ public class FacturaREST {
         }
         
         if(factura!=null){
-            logger.info("FacturaREST: factura with id:<"+id+"> not found.");
+            logger.info("FacturaREST: factura id:<"+id+"> not found.");
         }else{
-            logger.info("FacturaREST: factura found.");
+            logger.info("FacturaREST: factura id:<"+id+"> found.");
         }
         
         return factura;
@@ -139,38 +139,22 @@ public class FacturaREST {
      * @param toDate to Date.
      * @return Facturas list matching the date range.
      */
-//    @GET
-//    @Path("factura/{fromDate}/{toDate}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findByDate(
-//            @PathParam("fromDate") Date fromDate, @PathParam("toDate") Date toDate) {
-//        List facturasList= new ArrayList();
-//        try{
-//            logger.info("FacturaREST: Finding factura by date range.");
-//            facturasList=ejb.getFacturasByDate(fromDate, toDate);
-//        }catch(FacturasQueryException ex){
-//            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
-//        }
-//        
-//        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
-//        return facturasList;
-//    }
-    
-//    @GET
-//    @Path("/{fromDate}/{toDate}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findByDate(@PathParam("fromDate") Date fromDate, @PathParam("toDate") Date toDate) {
-//        List facturasList= new ArrayList();
-//        try{
-//            logger.info("FacturaREST: Finding factura by date range.");
-//            facturasList=ejb.getFacturasByDate(fromDate, toDate);
-//        }catch(FacturasQueryException ex){
-//            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
-//        }
-//        
-//        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
-//        return facturasList;
-//    }
+    @GET
+    @Path("factura/{fromDate}/{toDate}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Factura> findByDate(
+            @PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate) {
+        List facturasList= new ArrayList();
+        try{
+            logger.info("FacturaREST: Finding factura by date range.");
+            facturasList=ejb.getFacturasByDate(fromDate, toDate);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
+        return facturasList;
+    }
     
     /**
      * Find facturas by Cliente id.
@@ -193,19 +177,27 @@ public class FacturaREST {
         return facturasList;
     }
     
-//    @GET
-//    @Path("{from}/{to}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-//        return null;
-//    }
-//
-//    @GET
-//    @Path("count")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String countREST() {
-//        return null;
-//    }
+    /**
+     * Find facturas by Cliente id.
+     * @param id Client id
+     * @return Facturas list associated to client.
+     */
+    @GET
+    @Path("factura/reparacion/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Factura findByReparacion(@PathParam("id") int id) {
+        Factura factura= null;
+        try{
+            logger.info("FacturaREST: Finding factura by id cliente.");
+            factura=ejb.getFacturasByReparacion(id);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by id cliente.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: Factura id <"+factura.getId()+">, reparacion <"+factura.getReparacion().getId()+"> found.");
+        return factura;
+    }
+    
 
     
 }

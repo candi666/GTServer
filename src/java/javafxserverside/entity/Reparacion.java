@@ -7,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -23,13 +25,18 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name="reparacion",schema="dindb")
 @NamedQueries({
     @NamedQuery(
-        name="findAllReparaciones",
+        name="getAllReparaciones",
         query="SELECT r FROM Reparacion r"
     ),
     @NamedQuery(
             name = "getReparacionesByCliente",
             query = "SELECT r FROM Reparacion r WHERE r.cliente.id = :id"
-    )
+    ),
+    @NamedQuery(
+            name = "getReparacionesByDate",
+            //query = "SELECT r FROM Reparacion r WHERE (r.fechainicio >= :fromdate) AND (r.fechainicio <= :todate)"
+            query = "SELECT r FROM Reparacion r WHERE r.fechainicio BETWEEN :fromdate AND :todate"
+    )   
 })
 @XmlRootElement
 public class Reparacion implements Serializable {
@@ -44,7 +51,9 @@ public class Reparacion implements Serializable {
     private String descripcion;
     @ManyToOne
     private Cliente cliente;
-    @ManyToMany(mappedBy="reparaciones")
+    @ManyToMany
+    @JoinTable(name="pieza_reparacion", schema="dindb")
+    @XmlElement(name="pieza")
     private Collection<Pieza> piezas;
     
 

@@ -22,7 +22,7 @@ public interface ReparacionManagerLocal {
     
     // Get 
     public List<Reparacion> getAllReparaciones() throws ReparacionQueryException;
-    public List<Reparacion> getReparacionesByDate(Date fromDate, Date toDate) throws ReparacionQueryException;
+    public List<Reparacion> getReparacionesByDate(String fromDate, String toDate) throws ReparacionQueryException;
     public List<Reparacion> getReparacionesByCliente(int id) throws ReparacionQueryException;
     public Reparacion getReparacionById(int id) throws ReparacionQueryException;
     

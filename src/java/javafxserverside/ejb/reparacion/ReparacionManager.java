@@ -1,5 +1,7 @@
 package javafxserverside.ejb.reparacion;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javafxserverside.ejb.reparacion.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +16,8 @@ import javafxserverside.exception.reparacion.ReparacionUpdateException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Define EJB for Reparacion
@@ -29,14 +33,15 @@ public class ReparacionManager implements ReparacionManagerLocal {
     private EntityManager em;
 
     /**
-     * Get all reparacions
+     * Get all reparaciones
      *
-     * @return reparacions collection
+     * @return reparaciones collection
      */
     @Override
+    
     public List<Reparacion> getAllReparaciones() throws ReparacionQueryException {
-        logger.info("ReparacionManager: Finding all reparacions.");
-        return em.createNamedQuery("findAllReparaciones").getResultList();
+        logger.info("ReparacionManager: Finding all reparaciones.");
+        return em.createNamedQuery("getAllReparaciones").getResultList();
     }
 
     /**
@@ -64,14 +69,36 @@ public class ReparacionManager implements ReparacionManagerLocal {
     }
 
     /**
-     * Get reparacions by date range
+     * Get reparaciones by date range
      *
-     * @return reparacions collection
+     * @return reparaciones collection
      */
+    @XmlElement(name="reparaciones", type=Reparacion.class)
     @Override
-    public List<Reparacion> getReparacionesByDate(Date fromDate, Date toDate) throws ReparacionQueryException {
+    public List<Reparacion> getReparacionesByDate(String fromDate, String toDate) throws ReparacionQueryException {
         logger.info("Reparacion Manager: finding reparacion by date.");
-        return new ArrayList<Reparacion>();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date fd = null;
+        Date td = null;
+        
+        try {
+
+            fd = formatter.parse(fromDate);
+            System.out.println(fd);
+            System.out.println(formatter.format(fd));
+            
+            td = formatter.parse(toDate);
+            System.out.println(td);
+            System.out.println(formatter.format(td));
+            
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+
+
+        return em.createNamedQuery("getReparacionesByDate").setParameter("fromdate", new java.sql.Date(fd.getTime())).setParameter("todate", new java.sql.Date(td.getTime())).getResultList();
     }
 
     /**
@@ -84,8 +111,7 @@ public class ReparacionManager implements ReparacionManagerLocal {
     public List<Reparacion> getReparacionesByCliente(int id) throws ReparacionQueryException {
         logger.info("Reparacion Manager: finding reparacion by cliente.");
 
-        return em.createNamedQuery("getReparacionByCliente").setParameter("id", id).getResultList();
-        //return new ArrayList<Reparacion>();
+        return em.createNamedQuery("getReparacionesByCliente").setParameter("id", id).getResultList();
     }
 
     /**

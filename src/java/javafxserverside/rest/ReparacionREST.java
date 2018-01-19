@@ -1,5 +1,6 @@
 package javafxserverside.rest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import javafxserverside.ejb.reparacion.ReparacionManagerLocal;
@@ -19,9 +20,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
- * REST Class for Reparacions
+ * REST Class for Reparaciones
  * @author Carlos
  */
 @Path("reparacion")
@@ -99,9 +101,9 @@ public class ReparacionREST {
         }
         
         if(reparacion!=null){
-            logger.info("ReparacionREST: reparacion with id:<"+id+"> not found.");
+            logger.info("ReparacionREST: reparacion id:<"+id+"> not found.");
         }else{
-            logger.info("ReparacionREST: reparacion found.");
+            logger.info("ReparacionREST: reparacion id:<"+id+"> found.");
         }
         
         return reparacion;
@@ -113,6 +115,7 @@ public class ReparacionREST {
      */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @XmlElement(name="reparaciones", type=Reparacion.class)
     public List<Reparacion> findAll() {
         List reparacionesList= null;
         try{
@@ -129,7 +132,7 @@ public class ReparacionREST {
     /**
      * Find reparaciones by Cliente id.
      * @param id Client id
-     * @return Reparacions list associated to client.
+     * @return Reparaciones list associated to client.
      */
     @GET
     @Path("reparacion/cliente/{id}")
@@ -144,6 +147,30 @@ public class ReparacionREST {
         }
         
         logger.info("ReparacionREST: <"+reparacionesList.size()+"> records found.");
+        return reparacionesList;
+    }
+    
+    
+    /**
+     * Find reparaciones between a given date range.
+     * @param fromDate from Date.
+     * @param toDate to Date.
+     * @return Facturas list matching the date range.
+     */
+    @GET
+    @Path("reparacion/{fromDate}/{toDate}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Reparacion> findByDate(
+            @PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate) {
+        List reparacionesList= null;
+        try{
+            logger.info("FacturaREST: Finding reparacion by date range.");
+            reparacionesList=ejb.getReparacionesByDate(fromDate, toDate);
+        }catch(ReparacionQueryException ex){
+            logger.severe("Error finding reparaciones by date range.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: <"+reparacionesList.size()+"> records found.");
         return reparacionesList;
     }
     

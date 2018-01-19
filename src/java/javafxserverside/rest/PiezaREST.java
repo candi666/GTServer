@@ -113,9 +113,9 @@ public class PiezaREST {
         }
 
         if (pieza != null) {
-            logger.info("PiezaREST: pieza with id:<" + id + "> not found.");
+            logger.info("PiezaREST: pieza id:<" + id + "> not found.");
         } else {
-            logger.info("PiezaREST: pieza found.");
+            logger.info("PiezaREST: pieza id:<" + id + "> found.");
         }
 
         return pieza;
