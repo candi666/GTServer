@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package rest;
+package gestiontaller.rest;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
 /**
- * Jersey REST client generated for REST resource:PiezaREST [pieza]<br>
+ * Jersey REST client generated for REST resource:ReparacionREST
+ * [reparacion]<br>
  * USAGE:
  * <pre>
- *        PiezaRESTClient client = new PiezaRESTClient();
+ *        ReparacionRESTClient client = new ReparacionRESTClient();
  *        Object response = client.XXX(...);
  *        // do whatever with response
  *        client.close();
@@ -21,15 +17,27 @@ import javax.ws.rs.client.WebTarget;
  *
  * @author Carlos
  */
-public class PiezaRESTClient {
+public class ReparacionRESTClient {
 
     private WebTarget webTarget;
     private Client client;
     private static final String BASE_URI = "http://localhost:8080/ServidorGestionTaller/webresources";
 
-    public PiezaRESTClient() {
+    public ReparacionRESTClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
-        webTarget = client.target(BASE_URI).path("pieza");
+        webTarget = client.target(BASE_URI).path("reparacion");
+    }
+
+    public <T> T findByDate_XML(Class<T> responseType, String fromDate, String toDate) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("rango/{0}/{1}", new Object[]{fromDate, toDate}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T findByDate_JSON(Class<T> responseType, String fromDate, String toDate) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("rango/{0}/{1}", new Object[]{fromDate, toDate}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public <T> T find_XML(Class<T> responseType, String id) throws ClientErrorException {
@@ -41,6 +49,18 @@ public class PiezaRESTClient {
     public <T> T find_JSON(Class<T> responseType, String id) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T findByCliente_XML(Class<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("cliente/{0}", new Object[]{id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_XML).get(responseType);
+    }
+
+    public <T> T findByCliente_JSON(Class<T> responseType, String id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("cliente/{0}", new Object[]{id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
