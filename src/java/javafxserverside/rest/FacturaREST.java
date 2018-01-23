@@ -164,7 +164,7 @@ public class FacturaREST {
     @GET
     @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Factura> findByCliente(@PathParam("id") int id) {
+    public List<Factura> findByCliente(@PathParam("id") Integer id) {
         List facturasList= null;
         try{
             logger.info("FacturaREST: Finding factura by id cliente.");
@@ -185,7 +185,7 @@ public class FacturaREST {
     @GET
     @Path("reparacion/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Factura findByReparacion(@PathParam("id") int id) {
+    public Factura findByReparacion(@PathParam("id") Integer id) {
         Factura factura= null;
         try{
             logger.info("FacturaREST: Finding factura by id reparacion.");
@@ -199,9 +199,9 @@ public class FacturaREST {
     }
     
     /**
-     * Find facturas by Reparacion id.
-     * @param id Reparacion id
-     * @return Facturas list associated to reparacion.
+     * Find facturas by Pagada.
+     * @param status Factura pagada value
+     * @return Facturas list with given state.
      */
     @GET
     @Path("pagada/{status}")

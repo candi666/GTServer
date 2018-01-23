@@ -62,7 +62,7 @@ public class ReparacionREST {
         }catch(ReparacionUpdateException ex){
             logger.severe("Error updating reparacion.\n"+ex.getMessage());
         }
-        logger.info("Reparacion id: < "+reparacion.getId().toString() + " > updated.");
+        logger.info("Reparacion id: < "+reparacion.getId() + " > updated.");
     }
 
     /**
