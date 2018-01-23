@@ -4,13 +4,13 @@ package javafxserverside.exception.factura;
  * Manage query exceptions for Facturas
  * @author Carlos
  */
-public class FacturasQueryException extends Exception {
+public class FacturaQueryException extends Exception {
 
     /**
      * Creates a new instance of <code>QueryException</code> without detail
      * message.
      */
-    public FacturasQueryException() {
+    public FacturaQueryException() {
         super("Ha ocurrido un error al realizar la consulta.");
     }
 
@@ -20,7 +20,7 @@ public class FacturasQueryException extends Exception {
      *
      * @param msg the detail message.
      */
-    public FacturasQueryException(String msg) {
+    public FacturaQueryException(String msg) {
         super(msg);
     }
 }

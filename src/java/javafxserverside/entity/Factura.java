@@ -34,7 +34,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getFacturasByCliente",
             query = "SELECT f FROM Factura f WHERE f.cliente.id = :id"
-    )
+    ),
+    @NamedQuery(
+            name = "getFacturaByReparacion",
+            query = "SELECT f FROM Factura f WHERE f.reparacion.id = :id"
+    ),
+    @NamedQuery(
+            name = "getFacturasByDate",
+            query = "SELECT f FROM Factura f WHERE f.fecha BETWEEN :fromdate AND :todate"
+    ),
+    @NamedQuery(
+            name = "getFacturasByPagada",
+            query = "SELECT f FROM Factura f WHERE f.pagada=:status"
+    )    
 })
 @XmlRootElement
 public class Factura implements Serializable {

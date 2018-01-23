@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package javafxserverside.entity;
 
 import java.io.Serializable;
@@ -12,24 +7,36 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author 2dam
+ * Reparacion Entity
+ * @author Carlos
  */
 @Entity
+@Table(name="reparacion",schema="dindb")
 @NamedQueries({
     @NamedQuery(
-        name="findAllReparacion",
+        name="getAllReparaciones",
         query="SELECT r FROM Reparacion r"
-    )
+    ),
+    @NamedQuery(
+            name = "getReparacionesByCliente",
+            query = "SELECT r FROM Reparacion r WHERE r.cliente.id = :id"
+    ),
+    @NamedQuery(
+            name = "getReparacionesByDate",
+            //query = "SELECT r FROM Reparacion r WHERE (r.fechainicio >= :fromdate) AND (r.fechainicio <= :todate)"
+            query = "SELECT r FROM Reparacion r WHERE r.fechainicio BETWEEN :fromdate AND :todate"
+    )   
 })
 @XmlRootElement
 public class Reparacion implements Serializable {
@@ -44,7 +51,9 @@ public class Reparacion implements Serializable {
     private String descripcion;
     @ManyToOne
     private Cliente cliente;
-    @ManyToMany(mappedBy="reparaciones")
+    @ManyToMany
+    @JoinTable(name="pieza_reparacion", schema="dindb")
+    @XmlElement(name="pieza")
     private Collection<Pieza> piezas;
     
 
@@ -91,11 +100,11 @@ public class Reparacion implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Pieza> getPieza() {
+    public Collection<Pieza> getPiezas() {
         return piezas;
     }
-    public void setPieza(Collection<Pieza> pieza) {
-        this.piezas = pieza;
+    public void setPiezas(Collection<Pieza> piezas) {
+        this.piezas = piezas;
     }
 
     @Override

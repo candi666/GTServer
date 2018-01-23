@@ -14,18 +14,23 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author 2dam
+ * Pieza Entity
+ * @author Carlos
  */
 @Entity
+@Table(name="pieza",schema="dindb")
 @NamedQueries({
     @NamedQuery(
-        name="findAllPiezas",
+        name="getAllPiezas",
         query="SELECT p FROM Pieza p"
     )
 })
+@XmlRootElement
 public class Pieza implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,8 +39,8 @@ public class Pieza implements Serializable {
     private Integer id;
     private String descripcion;
     private String fabricante;
-    @ManyToMany
-    private Collection<Reparacion> reparaciones;
+//    @ManyToMany
+//    private Collection<Reparacion> reparaciones;
 
     public Integer getId() {
         return id;
@@ -47,7 +52,7 @@ public class Pieza implements Serializable {
     public String getDescripcion() {
         return descripcion;
     }
-    public void setescripcion(String descripcion) {
+    public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
@@ -58,12 +63,13 @@ public class Pieza implements Serializable {
         this.fabricante = fabricante;
     }
 
-    public Collection<Reparacion> getReparacion() {
-        return reparaciones;
-    }
-    public void setReparacion(Collection<Reparacion> reparaciones) {
-        this.reparaciones = reparaciones;
-    }
+//    @XmlTransient
+//    public Collection<Reparacion> getReparaciones() {
+//        return reparaciones;
+//    }
+//    public void setReparaciones(Collection<Reparacion> reparaciones) {
+//        this.reparaciones = reparaciones;
+//    }
 
     
 

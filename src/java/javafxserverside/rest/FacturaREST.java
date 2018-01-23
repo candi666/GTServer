@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
-import javafxserverside.ejb.factura.FacturasManagerLocal;
 import javafxserverside.entity.Factura;
-import javafxserverside.exception.factura.FacturasCreateException;
-import javafxserverside.exception.factura.FacturasDataException;
-import javafxserverside.exception.factura.FacturasDeleteException;
-import javafxserverside.exception.factura.FacturasQueryException;
-import javafxserverside.exception.factura.FacturasUpdateException;
+import javafxserverside.exception.factura.FacturaCreateException;
+import javafxserverside.exception.factura.FacturaDataException;
+import javafxserverside.exception.factura.FacturaDeleteException;
+import javafxserverside.exception.factura.FacturaQueryException;
+import javafxserverside.exception.factura.FacturaUpdateException;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javafxserverside.ejb.factura.FacturaManagerLocal;
 
 /**
  * REST Class for Facturas
@@ -36,7 +36,7 @@ public class FacturaREST {
     private static final Logger logger = Logger.getLogger(FacturaREST.class.getName());
     
     @EJB
-    private FacturasManagerLocal ejb;
+    private FacturaManagerLocal ejb;
 
     /**
      * Creates factura
@@ -48,7 +48,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: creating factura.");
             ejb.createFactura(factura);
-        }catch(FacturasCreateException | FacturasDataException ex){
+        }catch(FacturaCreateException | FacturaDataException ex){
             logger.severe("Error creating factura.\n"+ex.getMessage());
         }
         //logger.info("Factura id: < "+factura.getId().toString() + " > created.");
@@ -64,7 +64,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: updating factura.");
             ejb.updateFactura(factura);
-        }catch(FacturasUpdateException ex){
+        }catch(FacturaUpdateException ex){
             logger.severe("Error updating factura.\n"+ex.getMessage());
         }
         logger.info("Factura id: < "+factura.getId().toString() + " > updated.");
@@ -82,7 +82,7 @@ public class FacturaREST {
             Factura factura = ejb.getFacturaById(id);
             
             ejb.deleteFactura(factura);
-        }catch(FacturasDeleteException | FacturasQueryException ex){
+        }catch(FacturaDeleteException | FacturaQueryException ex){
             logger.severe("Error deleting factura.\n"+ex.getMessage());
         }
         logger.info("Factura id: < "+ id + " > deleted.");
@@ -101,14 +101,14 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: Finding factura by id.");
             factura=ejb.getFacturaById(id);
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding factura.\n"+ex.getMessage());
         }
         
         if(factura!=null){
-            logger.info("FacturaREST: factura with id:<"+id+"> not found.");
+            logger.info("FacturaREST: factura id:<"+id+"> not found.");
         }else{
-            logger.info("FacturaREST: factura found.");
+            logger.info("FacturaREST: factura id:<"+id+"> found.");
         }
         
         return factura;
@@ -125,7 +125,7 @@ public class FacturaREST {
         try{
             logger.info("FacturaREST: Finding all facturas.");
             facturasList=ejb.getAllFacturas();
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding facturas.\n"+ex.getMessage());
         }
         
@@ -139,38 +139,22 @@ public class FacturaREST {
      * @param toDate to Date.
      * @return Facturas list matching the date range.
      */
-//    @GET
-//    @Path("factura/{fromDate}/{toDate}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findByDate(
-//            @PathParam("fromDate") Date fromDate, @PathParam("toDate") Date toDate) {
-//        List facturasList= new ArrayList();
-//        try{
-//            logger.info("FacturaREST: Finding factura by date range.");
-//            facturasList=ejb.getFacturasByDate(fromDate, toDate);
-//        }catch(FacturasQueryException ex){
-//            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
-//        }
-//        
-//        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
-//        return facturasList;
-//    }
-    
-//    @GET
-//    @Path("/{fromDate}/{toDate}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findByDate(@PathParam("fromDate") Date fromDate, @PathParam("toDate") Date toDate) {
-//        List facturasList= new ArrayList();
-//        try{
-//            logger.info("FacturaREST: Finding factura by date range.");
-//            facturasList=ejb.getFacturasByDate(fromDate, toDate);
-//        }catch(FacturasQueryException ex){
-//            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
-//        }
-//        
-//        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
-//        return facturasList;
-//    }
+    @GET
+    @Path("rango/{fromDate}/{toDate}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Factura> findByDate(
+            @PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate) {
+        List facturasList= new ArrayList();
+        try{
+            logger.info("FacturaREST: Finding factura by date range.");
+            facturasList=ejb.getFacturasByDate(fromDate, toDate);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by date range.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
+        return facturasList;
+    }
     
     /**
      * Find facturas by Cliente id.
@@ -178,14 +162,14 @@ public class FacturaREST {
      * @return Facturas list associated to client.
      */
     @GET
-    @Path("factura/cliente/{id}")
+    @Path("cliente/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Factura> findByCliente(@PathParam("id") int id) {
+    public List<Factura> findByCliente(@PathParam("id") Integer id) {
         List facturasList= null;
         try{
             logger.info("FacturaREST: Finding factura by id cliente.");
             facturasList=ejb.getFacturasByCliente(id);
-        }catch(FacturasQueryException ex){
+        }catch(FacturaQueryException ex){
             logger.severe("Error finding facturas by id cliente.\n"+ex.getMessage());
         }
         
@@ -193,19 +177,47 @@ public class FacturaREST {
         return facturasList;
     }
     
-//    @GET
-//    @Path("{from}/{to}")
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public List<Factura> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-//        return null;
-//    }
-//
-//    @GET
-//    @Path("count")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String countREST() {
-//        return null;
-//    }
+    /**
+     * Find facturas by Reparacion id.
+     * @param id Reparacion id
+     * @return Facturas list associated to reparacion.
+     */
+    @GET
+    @Path("reparacion/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Factura findByReparacion(@PathParam("id") Integer id) {
+        Factura factura= null;
+        try{
+            logger.info("FacturaREST: Finding factura by id reparacion.");
+            factura=ejb.getFacturasByReparacion(id);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by id reparacion.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: Factura id <"+factura.getId()+">, reparacion <"+factura.getReparacion().getId()+"> found.");
+        return factura;
+    }
+    
+    /**
+     * Find facturas by Pagada.
+     * @param status Factura pagada value
+     * @return Facturas list with given state.
+     */
+    @GET
+    @Path("pagada/{status}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Factura> findByPagada(@PathParam("status") boolean status) {
+        List facturasList= null;
+        try{
+            logger.info("FacturaREST: Finding factura by id reparacion.");
+            facturasList=ejb.getFacturasByPagada(status);
+        }catch(FacturaQueryException ex){
+            logger.severe("Error finding facturas by id reparacion.\n"+ex.getMessage());
+        }
+        
+        logger.info("FacturaREST: <"+facturasList.size()+"> records found.");
+        return facturasList;
+    }
 
     
 }

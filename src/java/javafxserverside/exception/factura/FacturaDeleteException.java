@@ -9,13 +9,13 @@ package javafxserverside.exception.factura;
  *
  * @author Carlos
  */
-public class FacturasDeleteException extends Exception {
+public class FacturaDeleteException extends Exception {
 
     /**
      * Creates a new instance of <code>FacturasDeleteException</code> without
      * detail message.
      */
-    public FacturasDeleteException() {
+    public FacturaDeleteException() {
         super("Ha ocurrido un error al intentar eliminar la factura.");
     }
 
@@ -25,7 +25,7 @@ public class FacturasDeleteException extends Exception {
      *
      * @param msg the detail message.
      */
-    public FacturasDeleteException(String msg) {
+    public FacturaDeleteException(String msg) {
         super(msg);
     }
 }
