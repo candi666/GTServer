@@ -57,7 +57,16 @@ public class FacturaManager implements FacturaManagerLocal {
                 logger.info("FacturasManager: FacturasDataException creating factura.");
                 throw new FacturaDataException("Couldn't create factura, invalid factura data.");
             }
-            em.persist(factura);
+                Factura newFactura = new Factura();
+                newFactura.setFecha(factura.getFecha());
+                newFactura.setFechavenc(factura.getFechavenc());
+                newFactura.setReparacion(factura.getReparacion());
+                newFactura.setCliente(factura.getCliente());
+                newFactura.setTotal(factura.getTotal());
+                newFactura.setPagada(factura.getPagada());
+                em.persist(newFactura);
+            
+            
         } catch (Exception ex) {
             logger.info("FacturasManager: FacturasCreateException creating factura");
             throw new FacturaCreateException("Error creating factura.\n" + ex.getMessage());

@@ -49,11 +49,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     )    
 })
 @XmlRootElement
-public class Factura implements Serializable {
+public class Factura implements Serializable{
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Date fecha;
     private Date fechavenc;
@@ -63,7 +63,7 @@ public class Factura implements Serializable {
     private Reparacion reparacion;
     @ManyToOne
     private Cliente cliente;
-
+    
     public Integer getId() {
         return id;
     }
